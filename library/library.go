@@ -8,6 +8,11 @@
 // алгоритм — обидва варіанти приймаються).
 package library
 
+import (
+	"slices"
+	"sort"
+)
+
 // Author представляє автора книги.
 //
 // TODO (Завдання 1): додайте/скоригуйте поля на свій розсуд —
@@ -41,7 +46,22 @@ type Library struct {
 //
 // TODO (Завдання 1): реалізуйте додавання b до l.Books.
 func (l *Library) AddBook(b Book) {
-	// TODO: ваш код тут
+	if !slices.Contains(l.Books, b) {
+		l.Books = append(l.Books, b)
+	}
+
+	// additional implementation without slices.Contains
+	// exists := false
+	//
+	// for _, book := range l.Books {
+	//	 if book == b {
+	//	 	exists = true
+	//	 }
+	// }
+	//
+	// if !exists {
+	//	 l.Books = append(l.Books, b)
+	// }
 }
 
 // SortByYear сортує books за PublishedYear (за зростанням) на місці,
@@ -51,5 +71,42 @@ func (l *Library) AddBook(b Book) {
 // Підказка: sort.Slice(books, func(i, j int) bool { ... }) —
 // це вже частина стандартної бібліотеки Go, тому дозволена.
 func SortByYear(books []Book) {
-	// TODO: ваш код тут
+	if len(books) < 2 {
+		return
+	}
+
+	sort.Slice(books, func(i, j int) bool {
+		return books[i].PublishedYear < books[j].PublishedYear
+	})
+
+	// additional implementation without sort.Slice
+	// quickSort(books, func(a, b Book) bool {
+	//	return a.PublishedYear < b.PublishedYear
+	// })
 }
+
+//func quickSort[T any](items []T, less func(a, b T) bool) {
+//	if len(items) < 2 {
+//		return
+//	}
+//
+//	pivot := items[len(items)/2]
+//	lt, cur, gt := 0, 0, len(items)-1
+//
+//	for cur <= gt {
+//		switch {
+//		case less(items[cur], pivot):
+//			items[lt], items[cur] = items[cur], items[lt]
+//			lt++
+//			cur++
+//		case less(pivot, items[cur]):
+//			items[cur], items[gt] = items[gt], items[cur]
+//			gt--
+//		default:
+//			cur++
+//		}
+//	}
+//
+//	quickSort(items[:lt], less)
+//	quickSort(items[gt+1:], less)
+//}
