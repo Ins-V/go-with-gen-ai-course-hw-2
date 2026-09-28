@@ -12,8 +12,9 @@ package nilslice
 // TODO (Завдання 3): поверніть справжній nil-зріз (var s []int; return s),
 // а не порожній літерал.
 func NilResult() []int {
-	// TODO: ваш код тут
-	return []int{}
+	var s []int
+
+	return s
 }
 
 // EmptyResult повертає порожній, але НЕ nil, зріз — він був явно
@@ -21,8 +22,7 @@ func NilResult() []int {
 //
 // TODO (Завдання 3): поверніть порожній літерал зрізу.
 func EmptyResult() []int {
-	// TODO: ваш код тут
-	return nil
+	return []int{}
 }
 
 // IsNil — маленький хелпер, що повертає true, якщо переданий зріз
