@@ -1,3 +1,5 @@
+//go:build ignore
+
 // Розділ 3.3 · switch
 //
 // Демонструє: switch без автоматичного проходження (fall-through)
