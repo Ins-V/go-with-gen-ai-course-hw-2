@@ -9,7 +9,6 @@
 package library
 
 import (
-	"slices"
 	"sort"
 )
 
@@ -34,6 +33,22 @@ type Book struct {
 	PublishedYear int
 }
 
+// BookID — ідентичність книги: за ним AddBook вирішує,
+// чи є вона вже в каталозі.
+type BookID struct {
+	Title  string
+	Author string
+}
+
+// ID повертає ключ, за яким два записи вважаються однією книгою.
+//
+// Явний ключ замість порівняння всієї структури: інакше книга з
+// друкарською помилкою в імені автора або з незаповненим Author.Born
+// потрапила б до каталогу вдруге.
+func (b Book) ID() BookID {
+	return BookID{Title: b.Title, Author: b.Author.Name}
+}
+
 // Library зберігає колекцію книг.
 //
 // Library.Books — поле-зріз, як і вимагає завдання.
@@ -45,23 +60,18 @@ type Library struct {
 // AddBook додає книгу до бібліотеки.
 //
 // TODO (Завдання 1): реалізуйте додавання b до l.Books.
-func (l *Library) AddBook(b Book) {
-	if !slices.Contains(l.Books, b) {
-		l.Books = append(l.Books, b)
+func (l *Library) AddBook(b Book) bool {
+	id := b.ID()
+
+	for i := range l.Books {
+		if l.Books[i].ID() == id {
+			return false
+		}
 	}
 
-	// additional implementation without slices.Contains
-	// exists := false
-	//
-	// for _, book := range l.Books {
-	//	 if book == b {
-	//	 	exists = true
-	//	 }
-	// }
-	//
-	// if !exists {
-	//	 l.Books = append(l.Books, b)
-	// }
+	l.Books = append(l.Books, b)
+
+	return true
 }
 
 // SortByYear сортує books за PublishedYear (за зростанням) на місці,
