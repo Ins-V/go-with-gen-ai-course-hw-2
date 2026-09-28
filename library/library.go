@@ -8,6 +8,8 @@
 // алгоритм — обидва варіанти приймаються).
 package library
 
+import "slices"
+
 // Author представляє автора книги.
 //
 // TODO (Завдання 1): додайте/скоригуйте поля на свій розсуд —
@@ -41,7 +43,22 @@ type Library struct {
 //
 // TODO (Завдання 1): реалізуйте додавання b до l.Books.
 func (l *Library) AddBook(b Book) {
-	// TODO: ваш код тут
+	if !slices.Contains(l.Books, b) {
+		l.Books = append(l.Books, b)
+	}
+
+	// additional implementation without slices.Contains
+	// exists := false
+	//
+	// for _, book := range l.Books {
+	//	 if book == b {
+	//	 	exists = true
+	//	 }
+	// }
+	//
+	// if !exists {
+	//	 l.Books = append(l.Books, b)
+	// }
 }
 
 // SortByYear сортує books за PublishedYear (за зростанням) на місці,
